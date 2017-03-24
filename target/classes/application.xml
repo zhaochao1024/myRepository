@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- services -->
+
+    <bean id="petStore" class="com.myspringdemo.service.impl.PetStoreServiceImpl">
+        <constructor-arg type="java.lang.String" value="hello"></constructor-arg>
+        <constructor-arg type="int" value="75000"></constructor-arg>
+        <!--<property name="accountDao" ref="accountDao"/>-->
+        <!--<property name="itemDao" ref="itemDao"/>-->
+        <!-- additional collaborators and configuration for this bean go here -->
+    </bean>
+
+    <import resource="services.xml"/>
+    <!--<import resource="messageSource.xml"/>-->
+    <import resource="themeSource.xml"/>
+
+</beans>
