@@ -5,4 +5,7 @@ package com.myspringdemo.service;
  */
 public interface PetStoreService {
     String sayHello(String content);
+
+    void preDestroy();
+
 }

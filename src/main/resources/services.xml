@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-		http://www.springframework.org/schema/beans/spring-beans.xsd">
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="exampleBean" class="examples.ExampleBean">
+
+    <bean id="exampleBean" class="examples.ExampleBean" autowire-candidate="false">
         <!-- setter injection using the nested ref element -->
         <property name="beanOne">
             <ref bean="anotherExampleBean"/>
@@ -17,5 +19,66 @@
 
     <bean id="anotherExampleBean" class="examples.AnotherBean"/>
     <bean id="yetAnotherBean" class="examples.YetAnotherBean"/>
+
+    <!--<bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">-->
+        <!--&lt;!&ndash; results in a setDriverClassName(String) call &ndash;&gt;-->
+        <!--<property name="driverClassName" value="com.mysql.jdbc.Driver"/>-->
+        <!--<property name="url" value="jdbc:mysql://localhost:3306/mydb"/>-->
+        <!--<property name="username" value="root"/>-->
+        <!--<property name="password" value="masterkaoli"/>-->
+    <!--</bean>-->
+
+    <bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close"
+          p:driverClassName="com.mysql.jdbc.Driver"
+          p:url="jdbc:mysql://localhost:3306/mydb"
+          p:username="root"
+          p:password="masterkaoli"/>
+
+    <bean id="mappings"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+
+        <!-- typed as a java.util.Properties -->
+        <property name="properties">
+            <value>
+                jdbc.driver.className=com.mysql.jdbc.Driver
+                jdbc.url=jdbc:mysql://localhost:3306/mydb
+            </value>
+        </property>
+    </bean>
+
+
+
+    <bean id="moreComplexObject" class="examples.ComplexObject">
+        <!-- results in a setAdminEmails(java.util.Properties) call -->
+        <property name="adminEmails">
+            <props>
+                <prop key="administrator">administrator@example.org</prop>
+                <prop key="support">support@example.org</prop>
+                <prop key="development">development@example.org</prop>
+            </props>
+        </property>
+        <!-- results in a setSomeList(java.util.List) call -->
+        <property name="someList">
+            <list>
+                <value>a list element followed by a reference</value>
+                <ref bean="myDataSource" />
+            </list>
+        </property>
+        <!-- results in a setSomeMap(java.util.Map) call -->
+        <property name="someMap">
+            <map>
+                <entry key="an entry" value="just some string"/>
+                <entry key ="a ref" value-ref="myDataSource"/>
+            </map>
+        </property>
+        <!-- results in a setSomeSet(java.util.Set) call -->
+        <property name="someSet">
+            <set>
+                <value>just some string</value>
+                <ref bean="myDataSource" />
+            </set>
+        </property>
+    </bean>
 
 </beans>

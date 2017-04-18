@@ -19,4 +19,9 @@ public class ExampleBean {
     public void setIntegerProperty(int i) {
         this.i = i;
     }
+    public String toString(){
+
+        System.out.println("this is a spring DI example");
+        return "";
+    }
 }

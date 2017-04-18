@@ -1,18 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-		http://www.springframework.org/schema/beans/spring-beans.xsd">
+               http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+               http://www.springframework.org/schema/context
+               http://www.springframework.org/schema/context/spring-context-3.0.xsd" default-init-method="init">
 
+    <!--<context:property-override location="classpath:override.properties"/>-->
+    <context:property-placeholder location="demo.properties" />
+    <!--<context:property-override location="override.properties" />-->
     <!-- services -->
+    <!--<context:component-scan base-package="com" name-generator="com.myspringdemo.nameGenerator.NameGeneratorCustomByZhaoChao">-->
+        <!--<context:include-filter type="regex"-->
+                                <!--expression=".*Stub.*Repository"/>-->
+        <!--<context:exclude-filter type="annotation"-->
+                                <!--expression="org.springframework.stereotype.Repository"/>-->
+    <!--</context:component-scan> -->
 
-    <bean id="petStore" class="com.myspringdemo.service.impl.PetStoreServiceImpl">
-        <constructor-arg type="java.lang.String" value="hello"></constructor-arg>
-        <constructor-arg type="int" value="75000"></constructor-arg>
+    <context:component-scan base-package="com">
+        <!--<context:include-filter type="regex"-->
+                                <!--expression=".*Stub.*Repository"/>-->
+        <!--<context:exclude-filter type="annotation"-->
+                                <!--expression="org.springframework.stereotype.Repository"/>-->
+    </context:component-scan>
+    <!--<bean id="petStore" class="com.myspringdemo.service.impl.PetStoreServiceImpl" depends-on="exampleBean" autowire="byType" init-method="initMethod" lazy-init="true">-->
+        <!--<constructor-arg type="java.lang.String" value="${foo.fred.bob.sammy}"></constructor-arg>-->
+        <!--<constructor-arg type="int" value="75000"></constructor-arg>-->
         <!--<property name="accountDao" ref="accountDao"/>-->
         <!--<property name="itemDao" ref="itemDao"/>-->
-        <!-- additional collaborators and configuration for this bean go here -->
+         <!--additional collaborators and configuration for this bean go here-->
+    <!--</bean>-->
+
+    <bean id="lifecycleService2" class="com.myspringdemo.service.impl.LifeycycleServiceImpl2" primary="true">
     </bean>
+
+    <bean class="com.myspringdemo.controller.SimpleMovieCatalog">
+        <qualifier value="main"/>
+        <property name="name" value="helloworld" />
+         <!-- inject any dependencies required by this bean -->
+    </bean>
+    <!--
+	when the above bean (messenger) is instantiated, this custom
+	BeanPostProcessor implementation will output the fact to the system console
+	-->
+    <bean class="com.myspringdemo.springextension.InstantiationTracingBeanPostProcessor"/>
 
     <import resource="services.xml"/>
     <!--<import resource="messageSource.xml"/>-->
